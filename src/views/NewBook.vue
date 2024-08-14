@@ -102,7 +102,7 @@ export default {
       } catch (error) {
         console.error('Error adding book:', error);
         if (error.response && error.response.data && error.response.data.message) {
-          this.errors.title = error.response.data.message; // Show backend error (e.g., duplicate title)
+          this.flash(error.response.data.message, 'error');
         } else {
           this.flash('There was an error adding the book. Please try again.', 'error');
         }

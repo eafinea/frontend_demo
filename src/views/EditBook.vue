@@ -110,7 +110,7 @@ export default {
       } catch (error) {
         console.error('Error updating book:', error);
         if (error.response && error.response.data && error.response.data.message) {
-          this.errors.title = error.response.data.message; // Show backend error (e.g., duplicate title)
+          this.flash(error.response.data.message, 'error');
         } else {
           this.flash('Failed to update book!', 'error');
         }
