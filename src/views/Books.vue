@@ -60,7 +60,7 @@ export default {
       books: [],
       searchQuery: '',
       selectedGenre: '',
-      genres: ['Fiction', 'Non-Fiction', 'Fantasy', 'Science Fiction', 'Romance', 'Thriller', 'Mystery'] // Same genre list as in NewBook.vue
+      genres: ['Fiction', 'Non-Fiction', 'Fantasy', 'Science Fiction', 'Romance', 'Thriller', 'Mystery']
     };
   },
   async created() {

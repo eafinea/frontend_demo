@@ -55,10 +55,7 @@ export default {
       this.book = await getBookById(bookId);
     } catch (error) {
       console.error('Error fetching book details:', error);
-      this.$flashMessage.error({
-        message: 'Failed to load book details!',
-        time: 3000
-      });
+      this.flash('Failed to fetch book details!', 'error');
     }
   },
   methods: {
@@ -102,10 +99,7 @@ export default {
         const bookId = this.$route.params.id;
         await updateBookById(bookId, this.book);
         this.$router.push('/books');
-        this.$flashMessage.success({
-          message: 'Book updated successfully!',
-          time: 3000
-        });
+        this.flash('Book updated successfully!', 'success');
       } catch (error) {
         console.error('Error updating book:', error);
         if (error.response && error.response.data && error.response.data.message) {

@@ -93,15 +93,18 @@ export default {
           this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
         }
 
+        // Attempt to add the new book to the backend
         await addNewBook(this.book);
 
-        // Only display the success message after the book is successfully added
+        // If we reach this point, the book was successfully added
         this.flash('Book added successfully!', 'success');
         this.$router.push('/books');
       } catch (error) {
         console.error('Error adding book:', error);
+
+        // Check if the error is a backend validation error
         if (error.response && error.response.data && error.response.data.message) {
-          this.flash(error.response.data.message, 'error');
+          this.flash(error.response.data.message, 'error'); // Display backend error as a flash message
         } else {
           this.flash('There was an error adding the book. Please try again.', 'error');
         }
