@@ -112,10 +112,7 @@ export default {
         if (error.response && error.response.data && error.response.data.message) {
           this.errors.title = error.response.data.message; // Show backend error (e.g., duplicate title)
         } else {
-          this.$flashMessage.error({
-            message: 'Failed to update the book!',
-            time: 3000
-          });
+          this.flash('Failed to update book!', 'error');
         }
       }
     }
