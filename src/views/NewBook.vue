@@ -104,10 +104,8 @@ export default {
 
         // Check if the error is a backend validation error
         if (error.response && error.response.data && error.response.data.message) {
-          console.log('Backend validation error:', error.response.data.message);
           this.flash(error.response.data.message, 'error'); // Display backend error as a flash message
         } else {
-          console.log('Generic error');
           this.flash('There was an error adding the book. Please try again.', 'error');
         }
       }
