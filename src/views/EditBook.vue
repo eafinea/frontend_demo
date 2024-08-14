@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getBookById, updateBookById } from '@/helpers/api';
+import { editBook, getBookById, updateBookById } from '@/helpers/api';
 
 export default {
   data() {
@@ -97,7 +97,7 @@ export default {
         }
 
         const bookId = this.$route.params.id;
-        await updateBookById(bookId, this.book);
+        await editBook(bookId, this.book);
         this.$router.push('/books');
         this.flash('Book updated successfully!', 'success');
       } catch (error) {
