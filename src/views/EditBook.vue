@@ -12,7 +12,12 @@
       </div>
       <div class="form-group">
         <label for="genre">Genre</label>
-        <input v-model="book.genre" id="genre" class="form-control" placeholder="Genre" required />
+        <select v-model="book.genre" id="genre" class="form-control" required>
+          <option disabled value="">Please select a genre</option>
+          <option v-for="genre in genres" :key="genre" :value="genre">
+            {{ genre }}
+          </option>
+        </select>
       </div>
       <div class="form-group">
         <label for="description">Description</label>
@@ -29,7 +34,8 @@ import { viewBook, editBook } from '@/helpers/api';
 export default {
   data() {
     return {
-      book: {}
+      book: {},
+      genres: ['Fiction', 'Non-Fiction', 'Fantasy', 'Science Fiction', 'Romance', 'Thriller', 'Mystery']
     };
   },
   async created() {
