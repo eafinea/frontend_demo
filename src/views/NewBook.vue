@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <flash-message></flash-message> <!-- Flash message component -->
+    <flash-message></flash-message>
     <h1 class="mb-4">Add New Book</h1>
     <form @submit.prevent="createBook">
       <div class="form-group">
@@ -85,11 +85,18 @@ export default {
           });
           const uploadData = await uploadResponse.json();
 
+          // Check if the upload was successful
+          if (!uploadResponse.ok) {
+            throw new Error('Failed to upload image');
+          }
+
           // Update coverImageUrl with the URL of the uploaded image
           this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
         }
 
         await addNewBook(this.book);
+
+        // Only display the success message after the book is successfully added
         this.flash('Book added successfully!', 'success');
         this.$router.push('/books');
       } catch (error) {
