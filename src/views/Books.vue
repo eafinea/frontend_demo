@@ -79,14 +79,16 @@ export default {
     }
   },
   methods: {
-    async deleteBook(id) {
-      try {
-        await deleteBook(id);
-        this.books = await viewAllBooks(); // Refresh the list after deletion
-        this.flash('Book deleted successfully!', 'success');
-      } catch (error) {
-        this.flash('There was an error deleting the book. Please try again.', 'error');
-        console.error('Error deleting book:', error);
+    async deleteBook(bookId) {
+      if (confirm('Are you sure you want to delete this book?')) {
+        try {
+          await deleteBook(bookId);
+          this.books = await viewAllBooks();
+          this.flash('Book deleted successfully!', 'success');
+        } catch (error) {
+          console.error(error);
+          this.flash('An error occurred. Please try again.', 'danger');
+        }
       }
     }
   }

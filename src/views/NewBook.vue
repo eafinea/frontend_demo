@@ -5,19 +5,23 @@
       <div class="form-group">
         <label for="title">Title</label>
         <input v-model="book.title" id="title" class="form-control" placeholder="Title" required />
-        <span v-if="errors.title" class="text-danger">{{ errors.title }}</span> <!-- Error message for title -->
       </div>
       <div class="form-group">
         <label for="author">Author</label>
         <input v-model="book.author" id="author" class="form-control" placeholder="Author" required />
-        <span v-if="errors.author" class="text-danger">{{ errors.author }}</span> <!-- Error message for author -->
+      </div>
+      <div class="form-group">
+        <label for="genre">Genre</label>
+        <select v-model="book.genre" id="genre" class="form-control" required>
+          <option disabled value="">Please select a genre</option>
+          <option v-for="genre in genres" :key="genre" :value="genre">
+            {{ genre }}
+          </option>
+        </select>
       </div>
       <div class="form-group">
         <label for="description">Description</label>
-        <textarea v-model="book.description" id="description" class="form-control" placeholder="Description"
-          required></textarea>
-        <span v-if="errors.description" class="text-danger">{{ errors.description }}</span>
-        <!-- Error message for description -->
+        <textarea v-model="book.description" id="description" class="form-control" placeholder="Description"></textarea>
       </div>
       <div class="form-group">
         <label for="coverImageUrl">Cover Image URL</label>
@@ -42,10 +46,9 @@ export default {
         title: '',
         author: '',
         genre: '',
-        description: '',
-        coverImageUrl: ''
+        description: ''
       },
-      errors: {}, // Object to hold validation errors
+      genres: ['Fiction', 'Non-Fiction', 'Fantasy', 'Science Fiction', 'Romance', 'Thriller', 'Mystery'],
       uploadedImage: null
     };
   },
@@ -54,61 +57,27 @@ export default {
       const file = event.target.files[0];
       this.uploadedImage = file;
     },
+
+    
     async createBook() {
-      this.errors = {}; // Clear previous errors
+      
+      if (this.uploadedImage) {
+        const formData = new FormData();
+        formData.append('file', this.uploadedImage);
 
-      // Frontend validation
-      if (!this.book.title) {
-        this.errors.title = 'Title is required';
-      }
-      if (!this.book.author) {
-        this.errors.author = 'Author is required';
-      }
-      if (!this.book.description) {
-        this.errors.description = 'Description is required';
-      }
+        const uploadResponse = await fetch('http://localhost:3001/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const uploadData = await uploadResponse.json();
 
-      // Stop the submission if there are validation errors
-      if (Object.keys(this.errors).length > 0) {
-        return;
+        // Update coverImageUrl with the URL of the uploaded image
+        this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
       }
 
-      try {
-        if (this.uploadedImage) {
-          const formData = new FormData();
-          formData.append('file', this.uploadedImage);
-
-          const uploadResponse = await fetch('http://localhost:3001/upload', {
-            method: 'POST',
-            body: formData
-          });
-          const uploadData = await uploadResponse.json();
-
-          // Check if the upload was successful
-          if (!uploadResponse.ok) {
-            throw new Error('Failed to upload image');
-          }
-
-          // Update coverImageUrl with the URL of the uploaded image
-          this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
-        }
-
-        // Attempt to add the new book to the backend
-        await addNewBook(this.book);
-
-        // If we reach this point, the book was successfully added
-        this.flash('Book added successfully!', 'success');
-        this.$router.push('/books');
-      } catch (error) {
-        console.error('Error adding book:', error);
-
-        // Check if the error is a backend validation error
-        if (error.response && error.response.data && error.response.data.message) {
-          this.flash(error.response.data.message, 'error'); // Display backend error as a flash message
-        } else {
-          this.flash('There was an error adding the book. Please try again.', 'error');
-        }
-      }
+      await addNewBook(this.book);
+      this.flash('Book added successfully!', 'success');
+      this.$router.push('/books');
     }
   }
 };
