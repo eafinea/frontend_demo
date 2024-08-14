@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-5">
-    <flash-message></flash-message>
     <h1 class="mb-4">Add New Book</h1>
     <form @submit.prevent="createBook">
       <div class="form-group">

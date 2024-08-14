@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-5">
-    <flash-message></flash-message> <!-- Flash message component -->
     <h1 class="mb-4">Edit Book</h1>
     <form @submit.prevent="updateBook">
       <div class="form-group">
