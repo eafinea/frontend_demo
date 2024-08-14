@@ -59,25 +59,30 @@ export default {
       this.uploadedImage = file;
     },
 
-    
+
     async createBook() {
-      if (this.uploadedImage) {
-        const formData = new FormData();
-        formData.append('file', this.uploadedImage);
+      try {
+        if (this.uploadedImage) {
+          const formData = new FormData();
+          formData.append('file', this.uploadedImage);
 
-        const uploadResponse = await fetch('http://localhost:3001/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const uploadData = await uploadResponse.json();
+          const uploadResponse = await fetch('http://localhost:3001/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const uploadData = await uploadResponse.json();
 
-        // Update coverImageUrl with the URL of the uploaded image
-        this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
+          // Update coverImageUrl with the URL of the uploaded image
+          this.book.coverImageUrl = 'http://localhost:3001' + uploadData.url;
+        }
+
+        await addNewBook(this.book);
+        this.flash('Book added successfully!', 'success');
+        this.$router.push('/books');
+      } catch (error) {
+        this.flash('There was an error adding the book. Please try again.', 'error');
+        console.error('Error adding book:', error);
       }
-
-      await addNewBook(this.book);
-      this.flash('Book added successfully!');
-      this.$router.push('/books');
     }
   }
 };

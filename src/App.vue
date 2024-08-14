@@ -20,7 +20,6 @@
             <router-view />
           </div>
           <div class="four wide column">
-            <flash-message></flash-message>
           </div>
         </div>
       </div>

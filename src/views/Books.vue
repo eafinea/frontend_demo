@@ -83,16 +83,10 @@ export default {
       try {
         await deleteBook(id);
         this.books = await viewAllBooks(); // Refresh the list after deletion
-        this.flash({
-          message: 'Book deleted successfully!',
-          time: 3000
-        });
+        this.flash('Book deleted successfully!', 'success');
       } catch (error) {
+        this.flash('There was an error deleting the book. Please try again.', 'error');
         console.error('Error deleting book:', error);
-        this.flash({
-          message: 'Failed to delete the book!',
-          time: 3000
-        });
       }
     }
   }

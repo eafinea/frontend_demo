@@ -37,9 +37,15 @@ export default {
   },
   methods: {
     async updateBook() {
-      await editBook(this.$route.params.id, this.book);
-      this.flash('Book updated successfully!');
-      this.$router.push('/books');
+      try {
+        await editBook(this.$route.params.id, this.book);
+        this.flash('Book updated successfully!', 'success');
+        this.$router.push('/books');
+      } catch (error) {
+        this.flash('There was an error updating the book. Please try again.', 'error');
+        console.error(error);
+      }
+
     }
   }
 };
