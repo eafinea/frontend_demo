@@ -38,6 +38,7 @@ export default {
   methods: {
     async updateBook() {
       await editBook(this.$route.params.id, this.book);
+      this.flash('Book updated successfully!');
       this.$router.push('/books');
     }
   }

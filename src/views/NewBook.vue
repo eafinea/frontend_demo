@@ -76,8 +76,8 @@ export default {
       }
 
       await addNewBook(this.book);
+      this.flash('Book added successfully!');
       this.$router.push('/books');
-      this.flashMessage.success({ message: 'Book added successfully', time: 5000 });
     }
   }
 };
