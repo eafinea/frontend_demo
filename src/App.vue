@@ -6,9 +6,6 @@
           <router-link to="/books" class="item">
             <i class="list icon"></i>Books List
           </router-link>
-          <router-link to="/books/new" class="item">
-            <i class="plus icon"></i>New
-          </router-link>
         </div>
       </div>
     </div>
